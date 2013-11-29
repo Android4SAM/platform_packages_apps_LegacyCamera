@@ -17,9 +17,8 @@
 <!-- minHeight is necessary to avoid distortion or overlapping. -->
 <com.android.camera.ui.ControlPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/control_panel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="105dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/bg_camera_pattern">
     <include layout="@layout/review_thumbnail" />
     <include layout="@layout/review_control" />
