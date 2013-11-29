@@ -2164,11 +2164,12 @@ public class Camera extends ActivityBase implements FocusManager.Listener,
                 switchToOtherMode(ModePicker.MODE_VIDEO);
             }
         });
+        /* Didn't support panorama mode currently.
         MenuHelper.addSwitchModeMenuItem(menu, ModePicker.MODE_PANORAMA, new Runnable() {
             public void run() {
                 switchToOtherMode(ModePicker.MODE_PANORAMA);
             }
-        });
+        }); */
 
         if (mNumberOfCameras > 1) {
             menu.add(R.string.switch_camera_id)
