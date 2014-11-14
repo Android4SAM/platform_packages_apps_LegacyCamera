@@ -24,6 +24,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.Images.ImageColumns;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
@@ -32,8 +33,9 @@ import java.io.FileOutputStream;
 public class Storage {
     private static final String TAG = "CameraStorage";
 
-    public static final String DCIM =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
+    private static final String ENV_SECONDARY_STORAGE = "SECONDARY_STORAGE";
+
+    public static final String DCIM = getAvailableExternalStorage() + "/DCIM";
 
     public static final String DIRECTORY = DCIM + "/Camera";
 
@@ -48,6 +50,21 @@ public class Storage {
     public static final long PICTURE_SIZE = 1500000;
 
     private static final int BUFSIZE = 4096;
+
+    public static String getAvailableExternalStorage() {
+        // Splice in any secondary storage paths
+        final String rawSecondaryStorage = System.getenv(ENV_SECONDARY_STORAGE);
+        if (!TextUtils.isEmpty(rawSecondaryStorage)) {
+            for (String secondaryPath : rawSecondaryStorage.split(":")) {
+                String state = Environment.getStorageState(new File(secondaryPath));
+                if (Environment.MEDIA_MOUNTED.equals(state)) {
+                    return secondaryPath ;
+                }
+            }
+        }
+
+        return Environment.getExternalStorageDirectory().toString();
+    }
 
     public static Uri addImage(ContentResolver resolver, String title, long date,
                 Location location, int orientation, byte[] jpeg, int width, int height) {
@@ -103,7 +120,7 @@ public class Storage {
     }
 
     public static long getAvailableSpace() {
-        String state = Environment.getExternalStorageState();
+        String state = Environment.getStorageState(new File(DIRECTORY));
         Log.d(TAG, "External storage state=" + state);
         if (Environment.MEDIA_CHECKING.equals(state)) {
             return PREPARING;
