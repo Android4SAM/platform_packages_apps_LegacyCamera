@@ -56,10 +56,7 @@ public class Storage {
         final String rawSecondaryStorage = System.getenv(ENV_SECONDARY_STORAGE);
         if (!TextUtils.isEmpty(rawSecondaryStorage)) {
             for (String secondaryPath : rawSecondaryStorage.split(":")) {
-                String state = Environment.getStorageState(new File(secondaryPath));
-                if (Environment.MEDIA_MOUNTED.equals(state)) {
-                    return secondaryPath ;
-                }
+                return secondaryPath;
             }
         }
 
